@@ -1,0 +1,53 @@
+version: '2'
+
+services:
+  spark:
+    image: s1mplecc/spark-hadoop:3
+    hostname: master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    volumes:
+      - /home/yinggan/Workspace/CS262/spark-hadoop-docker/share:/opt/share
+    ports:
+      - '8100:8080'
+      - '4060:4040'
+      - '8108:8088'
+      - '8062:8042'
+      - '9890:9870'
+      - '19908:19888'
+  spark-worker-1:
+    image: s1mplecc/spark-hadoop:3
+    hostname: worker1
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    volumes:
+      - /home/yinggan/Workspace/CS262/spark-hadoop-docker/share:/opt/share
+    ports:
+      - '8101:8081'
+  spark-worker-2:
+    image: s1mplecc/spark-hadoop:3
+    hostname: worker2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    volumes:
+      - /home/yinggan/Workspace/CS262/spark-hadoop-docker/share:/opt/share
+    ports:
+      - '8102:8081'
