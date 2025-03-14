@@ -11,9 +11,10 @@ object GraphXExampleHDFS {
       .getOrCreate()
     val sc = spark.sparkContext
 
-    // Define HDFS paths for the input files.
+    // Define HDFS path for the input edge file.
     val edgesPath = "hdfs://master:9000/edge.txt"      // Adjust this HDFS path as needed.
-    val verticesPath = "hdfs://master:9000/vertices.txt"  // Adjust this HDFS path as needed.
+    // Define the output directory on HDFS
+    val outputPath = "hdfs://master:9000/pagerank_output" // Make sure this directory doesn't exist before running
 
     // Load the graph from the HDFS edge list file.
     val graph = GraphLoader.edgeListFile(sc, edgesPath)
@@ -21,21 +22,13 @@ object GraphXExampleHDFS {
     // Run the PageRank algorithm on the graph.
     val ranks = graph.staticPageRank(10).vertices
 
-    // Load the vertices with names (assuming CSV format: "vertexId,name") from HDFS.
-    val users = sc.textFile(verticesPath).map { line =>
-      val fields = line.split(",")
-      (fields(0).toLong, fields(1))
-    }
+    // Dump the results to HDFS.
+    ranks.saveAsTextFile(outputPath)
 
-    // Join the user names with their PageRank scores.
-    val rankedNames = users.join(ranks).map {
-      case (id, (name, rank)) => (name, rank)
-    }
-
-    // Print the PageRank results.
-    println("PageRank Results:")
-    rankedNames.collect().foreach { case (name, rank) =>
-      println(s"$name: $rank")
+    // Optionally, print some of the results for verification.
+    println("PageRank Results (sample):")
+    ranks.take(10).foreach { case (id, rank) =>
+      println(s"Vertex $id: $rank")
     }
     
     spark.stop()
