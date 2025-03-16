@@ -26,7 +26,7 @@ services:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://master:7077
       - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_CORES=1
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
@@ -39,7 +39,7 @@ services:
       resources:
         limits:
           memory: 2G
-          cpus: '2.0'
+          cpus: '1.0'
   spark-worker-2:
     image: s1mplecc/spark-hadoop:3
     hostname: worker2
@@ -47,7 +47,7 @@ services:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://master:7077
       - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_CORES=1
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
@@ -60,25 +60,4 @@ services:
       resources:
         limits:
           memory: 2G
-          cpus: '2.0'
-  spark-worker-3:
-    image: s1mplecc/spark-hadoop:3
-    hostname: worker3
-    environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://master:7077
-      - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-    volumes:
-      - /home/yinggan/Workspace/CS262/spark-hadoop-docker/share:/opt/share
-    ports:
-      - '8083:8081'
-    deploy:
-      resources:
-        limits:
-          memory: 2G
-          cpus: '2.0'
+          cpus: '1.0'
